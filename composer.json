@@ -1,0 +1,21 @@
+{
+    "name": "jetezra/jet-framework",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Jet\\JetFramework\\": "app/"
+        }
+    },
+    "authors": [
+        {
+            "name": "jet2018",
+            "email": "ezrajet9@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=8.1",
+        "jetezra/rest-php": "dev-main"
+    }
+}
