@@ -2,7 +2,6 @@
 
 namespace Jet\JetFramework\Services;
 
-use JetPhp\Exeptions\UserUnauthenticatedException;
 use JetPhp\Request\BaseRestService;
 use JetPhp\Request\Request;
 use JetPhp\Response\BaseResponse;
@@ -10,12 +9,12 @@ use JetPhp\Response\BaseResponse;
 class UserService extends BaseRestService
 {
 
-    public function login($request): BaseResponse
+    public function login(Request $request): BaseResponse
     {
+
         return BaseResponse::JsonResponse(
             0,
             "If you're still seeing, you need to implement the login action",
-            $request->getData()
         );
     }
     /**
