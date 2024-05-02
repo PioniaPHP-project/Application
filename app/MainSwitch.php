@@ -2,7 +2,7 @@
 
 namespace Jet\JetFramework;
 
-use Jet\JetFramework\services\UserService;
+use Jet\JetFramework\Services\UserService;
 use JetPhp\Request\BaseRestService;
 use JetPhp\Request\Request;
 use JetPhp\Response\BaseResponse;

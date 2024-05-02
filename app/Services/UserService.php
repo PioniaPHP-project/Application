@@ -1,6 +1,6 @@
 <?php
 
-namespace Jet\JetFramework\services;
+namespace Jet\JetFramework\Services;
 
 use JetPhp\Exeptions\UserUnauthenticatedException;
 use JetPhp\Request\BaseRestService;
