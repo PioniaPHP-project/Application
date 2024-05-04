@@ -1,9 +1,8 @@
 <?php
 
 
-use JetPhp\Core\Config\CoreKernel;
-use JetPhp\Request\Request;
-
+use jetPhp\core\config\CoreKernel;
+use jetPhp\request\Request;
 
 define('BASEPATH', __DIR__);
 

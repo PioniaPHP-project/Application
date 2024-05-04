@@ -2,9 +2,9 @@
 namespace Jet\JetFramework\Controller;
 
 use Jet\JetFramework\MainSwitch;
-use JetPhp\Core\BaseApiController;
-use JetPhp\Request\Request;
-use JetPhp\Response\BaseResponse;
+use jetPhp\core\BaseApiController;
+use jetPhp\request\Request;
+use jetPhp\response\BaseResponse;
 
 /**
  * This is the only controller we need here

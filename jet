@@ -1,7 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-use JetPhp\Command\CommandInterface;
+
+use jetPhp\command\CommandInterface;
 
 define('BASEPATH', __DIR__);
 

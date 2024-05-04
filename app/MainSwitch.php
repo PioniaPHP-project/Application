@@ -3,9 +3,9 @@
 namespace Jet\JetFramework;
 
 use Jet\JetFramework\Services\UserService;
-use JetPhp\Request\BaseRestService;
-use JetPhp\Request\Request;
-use JetPhp\Response\BaseResponse;
+use jetPhp\request\BaseRestService;
+use jetPhp\request\Request;
+use jetPhp\response\BaseResponse;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
 class MainSwitch extends BaseRestService

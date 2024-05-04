@@ -2,9 +2,10 @@
 
 namespace Jet\JetFramework\Services;
 
-use JetPhp\Request\BaseRestService;
-use JetPhp\Request\Request;
-use JetPhp\Response\BaseResponse;
+
+use jetPhp\request\BaseRestService;
+use jetPhp\request\Request;
+use jetPhp\response\BaseResponse;
 
 class UserService extends BaseRestService
 {

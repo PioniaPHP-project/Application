@@ -1,7 +1,7 @@
 <?php
 
 
-use JetPhp\Core\Routing\JetRouter;
+use jetPhp\core\routing\JetRouter;
 
 $router = new JetRouter();
 
