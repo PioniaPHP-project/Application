@@ -7,7 +7,7 @@ It runs on top of ✨ J2J ✨ architecture.
 ## Installation
 
 ```bash
-composer create-project --prefer-dist=dev [more to be added here after release]
+composer create-project jetezra/jet-framework
 ```
 
 ## Directory
