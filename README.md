@@ -148,4 +148,169 @@ return BaseResponse::JsonResponse(0, $message, $data, $extraData);
 ```
 
 The format of the response, controller, switch, and request is what defines the architecture `J2J`.
+
+## Database Querying
+This framework is meant for performance intensive applications. Both developer and program performance. 
+That's why it strips off the use of models and maintains simple queries that we are all used to. 
+
+No more hustling with customization, it's your query, you know what to do with it.
+
+With that in mind, we provide you some helpers that ease this work:- 
+
+Using the class `QueryBuilder()`, you have access to and three methods:-
+
+ >  one($query, array $bindings):- 
+This method is for when you want to return a single item.
+```php
+use jetPhp\database\QueryBuilder
+
+$username = $data['email'];
+$query = new QueryBuilder();
+
+$results = $query->one("SELECT * FROM users WHERE email = :username", ['username'=>$username]); // an object
+
+```
+
+> all($query, $bindings):- This is for returning an array of items
+
+```php
+ $query = new QueryBuilder();
+ $results = $query->all("SELECT * FROM users"); // array of items
+```
+
+> Query($query, $mode):- This is helpful for running queries directly that are unbound. It can run all sorts of queries.
+
+```php
+use jetPhp\database\QueryBuilder
+
+ $query = new QueryBuilder();
+ $query->Query("INSERT into password_reset_tokens(email, token) values ('sample@gmail.com', 12345)");
+```
+
+### Multi-databases
+By default, the database under the `[db]` setting in the settings.ini will be used.
+
+You can however, define other databases like `[db2]` and use them like this.
+
+```php
+use jetPhp\database\QueryBuilder
+
+$q = new QueryBuilder();
+$q->Using('db2')->all('your-query-here-as-usual');
+```
+
+Note that, `Using` must be called first to change the connection before calling the other instance methods.
+
+So, from the above, we get the following cons
+
+ - No mapping result sets to models therefore no model hydration.
+ - No strange ORM therefore you get to do what you want.
+ - No migrations, no more commands to run. 
+ - You get to customise and optimise your queries according to you!!
+ - You get to work with any existing or new databases!
+
+### Query Pagination
+
+We understand that you might be wanting to query huge datasets, we got that covered.
+
+```php
+
+use jetPhp\database\Paginator
+
+$paginator = new Paginator("select * from users");
+
+$results = $paginator
+            ->LimitBy(10) // items per page
+            ->startFrom(0) // where to start from 
+            ->paginate(array $bidings_if_any); // call this to finally run the pagination along any of your bindings
+```
+
+The response will be an associative array containing the following :-
+       
+* total_records :- These are all the the records before applying the limits and offsets
+* results :- This is the data we got back from the database.
+* next_offset :- Next starting point basing on current limit and offset.
+* previous_offset :- Offset to call if one wants to go back.
+* has_next_page :- If we have a next page to go to at all. False if we are at the last page.
+* has_prev_page :- If we can go back. False if we are at the first page 
+* number_of_records :- The number of records returned in the current result set. Should always be less than limit.
+
+## Middlewares
+
+A middle in this framework run on every request and every response. 
+It runs before before authentication backends. Therefore, you can't access the authenticated user context from the request, but the cleanup will 
+have this data, therefore you can access the authenticated user. This is great for doing staff like logging a request, encrypting and descryption...
+
+All middleware must extend `jetPhp\core\interceptions\BaseMiddleware`
+
+```php
+use jetPhp\core\interceptions\BaseMiddleware
+
+class MySimpleMiddleware extends BaseMiddleware
+{
+    public function run(\jetPhp\request\Request $request,?\jetPhp\response\Response $response){
+        if ($response){
+            // here you can do logic that has access to both request and response
+            // this will run after running the service. So there is a high chance that you can even access the response data here
+        } else {
+            // add login here that only has access to request only.
+            // this will run the first time before hitting the actual service
+        }
+    }
+}
+```
+
+### Middleware Registration
+
+Creating a middleware is not enough, you need to add them in our `kernel`.
+Head over to `index.php` and add it on this line
+```php
+->registerMiddleware([
+    'Jet\JetFramework\middlewares\SampleMiddlewareMySimpleMiddleware'
+])
+```
+That's it, your middleware is now ready to start running against every request and every response.
+
+## Authentication Backends.
+
+These are the strategies the app will use to authenticate user to the app context.
+They run on every request in the order of their registration.
+
+Once one of these set the user to context, the rest will be ignored!
+
+Imagine an app where users authenticate differently forexample for web and mobile.
+This could be your advantage to define them seperately. You can also have only auth backend, example
+all your users can decide to authenticate using JWT. That's it. Implement that and you're done.
+
+All Auth Backends must extend the `jetPhp\core\interceptions\BaseAuthenticationBackend`, implement the 
+`authenticate` method and return `ContextUserObject` or `null`
+
+That means in your backend, the only job you have is to query and set up the `ContextUserObject` accordingly.
+```php
+class MobileAuthBackend extends BaseAuthenticationBackend
+{
+
+    public function authenticate(Request $request): ContextUserObject
+    {
+        // this is where you can look up your user accordingly and set up
+        return new ContextUserObject();
+    }
+}
+```
+Authentication Backends also have access to the ongoing request just incase you want to pick something from headers or body itself.
+
+### Authentication Backend Registration.
+
+Just like middlewares, you can find and add your auth backends to the `kernel` in `index.php` on this line
+
+```php
+->registerAuthBackends(['Jet\JetFramework\authenticationBackends\MobileAuthBackend']) // add your authentication backends here
+```
+
+And that's it!!! 
+
+## Contributions
+
+All forms of contributions are welcome from documentation, coding, community development and many more.
+
 ### 🔥🔥🔥 Goodluck, and happy coding 🔥🔥🔥
