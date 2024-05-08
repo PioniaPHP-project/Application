@@ -110,8 +110,8 @@ Example request:-
 ```json
 {
     "SERVICE" :"user",
-    "ACTION": "login",
-//       ...rest of the data also as key-value
+    "ACTION": "login"
+    // ...rest of the data also as key-value
 }
 ```
 
