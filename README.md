@@ -4,11 +4,12 @@ The first PHP REST framework that is truly
 
 It runs on top of ✨ J2J ✨ architecture.
 
-## Installation
+## Creating a project
 
 ```bash
-composer create-project jetezra/jet-framework
+composer create-project jetezra/jet-framework my_simple_project
 ```
+Please remember to replace `my_simple_project` with your project name
 
 ## Directory
     
