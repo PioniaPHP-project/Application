@@ -1,6 +1,6 @@
 # 🚀JetPhp Framework🚀
 
-The first PHP REST framework that is truly
+The first PHP REST framework that is truly restful.
 
 It runs on top of ✨ J2J ✨ architecture.
 
