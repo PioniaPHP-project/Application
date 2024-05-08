@@ -8,7 +8,7 @@ $router = new JetRouter();
 /**
  * Routes are grouped under one api. The default below
  */
-$router->addGroup('Jet\JetFramework\Controller\ApiController')
+$router->addGroup('Jet\JetFramework\Controller')
     ->post('api_v1', 'api_version_one');
 
 //...rest of your routes

@@ -16,6 +16,6 @@
     "minimum-stability": "dev",
     "require": {
         "php": ">=8.1",
-        "jetezra/rest-php": "dev-main"
+        "jetezra/jetphp-core": "dev-main"
     }
 }
