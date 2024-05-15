@@ -1,13 +1,13 @@
-# 🚀JetPhp Framework🚀
+# 🚀Pionia Framework🚀
 
 The first PHP REST framework that is truly restful.
 
-It runs on top of ✨ J2J ✨ architecture.
+It runs on top of ✨ Moonlight ✨ architecture.
 
 ## Creating a project
 
 ```bash
-composer create-project jetezra/pionia-framework my_simple_project
+composer create-project pionia/pionia-app my_simple_project
 ```
 Please remember to replace `my_simple_project` with your project name
 
@@ -41,10 +41,10 @@ Your endpoint is now running on http://localhost:8000/api/v1/
 Detailed Documentation to follow.
 
 ### Creating a service.
-Create a new service in services folder. Services are normal PHP classes that extend `jetPhp\request\BaseRestService`.
+Create a new service in services folder. Services are normal PHP classes that extend `Pionia\request\BaseRestService`.
 
 ### Creating an action
-In the service/class created above, create a method that returns `jetPhp\response\BaseResponse`. 
+In the service/class created above, create a method that returns `Pionia\response\BaseResponse`. 
 This action/method can take on the following params in the respective order:-
        
 1. $data:- This is the request data minus the files.
@@ -61,8 +61,8 @@ Example Service with an action.
 namespace application\services;
 
 
-use jetPhp\request\BaseRestService;
-use jetPhp\response\BaseResponse;
+use Pionia\request\BaseRestService;
+use Pionia\response\BaseResponse;
 
 class UserService extends BaseRestService
 {
@@ -88,7 +88,7 @@ class UserService extends BaseRestService
 
 ### Check authentication context.
 In your action/method, check for methods like `$this->mustAuthenticate($optionalMessagehere), $this->auth()`.
-You can find all the available [methods here ](https://jetphp-project.github.io/JetPhp-Core/classes/jetPhp-request-BaseRestService.html)
+You can find all the available [methods here ](https://Pionia-project.github.io/Pionia-Core/classes/Pionia-request-BaseRestService.html)
 
 ### Registering services
 In the `MainApiSwitch.php` add your service and give it a name, example:-
@@ -126,9 +126,9 @@ data.append('ACTION', 'login');
 ```
 
 ## Response
-All requests have the same response as [explained here](https://jetphp-project.github.io/JetPhp-Core/classes/jetPhp-response-BaseResponse.html).
+All requests have the same response as [explained here](https://Pionia-project.github.io/Pionia-Core/classes/Pionia-response-BaseResponse.html).
 
-All actions in services must return `BaseReponse` from `jetPhp\response\BaseResponse` which is composed of the following:-
+All actions in services must return `BaseReponse` from `Pionia\response\BaseResponse` which is composed of the following:-
 
 1. `$returnCode`:- Return Code is the new and custom way of returning your own custom codes back to the frontend.
 The fact that you can customize these gives your team a chance to define different codes for dirrent scenarios.
@@ -142,13 +142,13 @@ The fact that you can customize these gives your team a chance to define differe
 
 To send a response, just call:- 
 ```php
-use jetPhp\response\BaseResponse
+use Pionia\response\BaseResponse
 // rest of your method login here
 return BaseResponse::JsonResponse(0, $message, $data, $extraData);
 }
 ```
 
-The format of the response, controller, switch, and request is what defines the architecture `J2J`.
+The format of the response, controller, switch, and request is what defines the architecture `Moonlight`.
 
 ## Database Querying
 This framework is meant for performance intensive applications. Both developer and program performance. 
