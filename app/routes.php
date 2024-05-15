@@ -1,14 +1,14 @@
 <?php
 
 
-use jetPhp\core\routing\JetRouter;
+use Pionia\core\routing\PioniaRouter;
 
-$router = new JetRouter();
+$router = new PioniaRouter();
 
 /**
  * Routes are grouped under one api. The default below
  */
-$router->addGroup('Jet\JetFramework\Controller')
+$router->addGroup('application\Controller')
     ->post('api_v1', 'api_version_one');
 
 //...rest of your routes

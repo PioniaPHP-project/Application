@@ -1,10 +1,10 @@
 <?php
 
-namespace Jet\JetFramework\services;
+namespace application\services;
 
 
-use jetPhp\request\BaseRestService;
-use jetPhp\response\BaseResponse;
+use Pionia\request\BaseRestService;
+use Pionia\response\BaseResponse;
 
 class UserService extends BaseRestService
 {

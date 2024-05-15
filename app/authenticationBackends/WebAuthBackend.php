@@ -1,10 +1,14 @@
 <?php
 
-namespace Jet\JetFramework\authenticationBackends;
+namespace application\authenticationBackends;
 
-use jetPhp\core\helpers\ContextUserObject;
-use jetPhp\core\interceptions\BaseAuthenticationBackend;
-use jetPhp\request\Request;
+
+
+
+
+use Pionia\core\helpers\ContextUserObject;
+use Pionia\core\interceptions\BaseAuthenticationBackend;
+use Pionia\request\Request;
 
 /**
  * Implement this to handle web user authentication

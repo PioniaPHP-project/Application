@@ -7,7 +7,7 @@ It runs on top of ✨ J2J ✨ architecture.
 ## Creating a project
 
 ```bash
-composer create-project jetezra/jet-framework my_simple_project
+composer create-project jetezra/pionia-framework my_simple_project
 ```
 Please remember to replace `my_simple_project` with your project name
 
@@ -26,12 +26,12 @@ Please remember to replace `my_simple_project` with your project name
 
 After installation, just run the following to start the server
 ```bash
-php jet serve  # http://localhost:8000
+php pionia serve  # http://localhost:8000
 ```
 
 By default, the server will run on port 8000, to change that, run the following
 ```bash
-php jet serve -p8080 # http://localhost:8080
+php pionia serve -p8080 # http://localhost:8080
 ```
 
 Your endpoint is now running on http://localhost:8000/api/v1/
@@ -54,10 +54,11 @@ This action/method can take on the following params in the respective order:-
 All requests will also define the action name which is the name of the method you want to run in the service registered.
 
 Example Service with an action.
+
 ```php
 <?php
 
-namespace Jet\JetFramework\services;
+namespace application\services;
 
 
 use jetPhp\request\BaseRestService;

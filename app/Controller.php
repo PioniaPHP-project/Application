@@ -1,10 +1,11 @@
 <?php
-namespace Jet\JetFramework;
+namespace application;
 
 use Exception;
-use jetPhp\core\BaseApiController;
-use jetPhp\request\Request;
-use jetPhp\response\BaseResponse;
+use application\MainApiSwitch;
+use Pionia\core\BaseApiController;
+use Pionia\request\Request;
+use Pionia\response\BaseResponse;
 
 /**
  * This is the only controller we need here

@@ -1,8 +1,8 @@
 <?php
 
 
-use jetPhp\core\config\CoreKernel;
-use jetPhp\request\Request;
+use Pionia\core\config\CoreKernel;
+use Pionia\request\Request;
 
 define('BASEPATH', __DIR__);
 
@@ -13,7 +13,7 @@ define('SETTINGS', BASEPATH . '/settings.ini');
 require_once BASEPATH . '/vendor/autoload.php';
 
 
-$routes = require BASEPATH . '/app/routes.php';
+$routes = require_once BASEPATH . '/app/routes.php';
 
 
 $kernel = new CoreKernel($routes);

@@ -1,9 +1,9 @@
 <?php
 
-namespace Jet\JetFramework;
+namespace application;
 
-use Jet\JetFramework\services\UserService;
-use jetPhp\core\BaseApiServiceSwitch;
+use application\services\UserService;
+use Pionia\core\BaseApiServiceSwitch;
 
 class MainApiSwitch extends BaseApiServiceSwitch
 {
