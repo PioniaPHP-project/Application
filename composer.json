@@ -1,5 +1,6 @@
 {
     "name": "pionia/pionia-app",
+    "description": "The first truly restful PHP framework based on Moonlight architecture.",
     "type": "project",
     "license": "MIT",
     "autoload": {
