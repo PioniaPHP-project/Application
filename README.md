@@ -163,10 +163,9 @@ Using the class `QueryBuilder()`, you have access to and three methods:-
  >  one($query, array $bindings):- 
 This method is for when you want to return a single item.
 ```php
-use jetPhp\database\QueryBuilder
 
 $username = $data['email'];
-$query = new QueryBuilder();
+$query = new \Pionia\database\QueryBuilder();
 
 $results = $query->one("SELECT * FROM users WHERE email = :username", ['username'=>$username]); // an object
 
@@ -182,9 +181,8 @@ $results = $query->one("SELECT * FROM users WHERE email = :username", ['username
 > Query($query, $mode):- This is helpful for running queries directly that are unbound. It can run all sorts of queries.
 
 ```php
-use jetPhp\database\QueryBuilder
 
- $query = new QueryBuilder();
+ $query = new \Pionia\database\QueryBuilder();
  $query->Query("INSERT into password_reset_tokens(email, token) values ('sample@gmail.com', 12345)");
 ```
 
@@ -194,9 +192,8 @@ By default, the database under the `[db]` setting in the settings.ini will be us
 You can however, define other databases like `[db2]` and use them like this.
 
 ```php
-use jetPhp\database\QueryBuilder
 
-$q = new QueryBuilder();
+$q = new QueryBuilder\();
 $q->Using('db2')->all('your-query-here-as-usual');
 ```
 
@@ -216,9 +213,8 @@ We understand that you might be wanting to query huge datasets, we got that cove
 
 ```php
 
-use jetPhp\database\Paginator
 
-$paginator = new Paginator("select * from users");
+$paginator = new \Pionia\database\Paginator("select * from users");
 
 $results = $paginator
             ->LimitBy(10) // items per page
@@ -242,14 +238,13 @@ A middle in this framework run on every request and every response.
 It runs before before authentication backends. Therefore, you can't access the authenticated user context from the request, but the cleanup will 
 have this data, therefore you can access the authenticated user. This is great for doing staff like logging a request, encrypting and descryption...
 
-All middleware must extend `jetPhp\core\interceptions\BaseMiddleware`
+All middleware must extend `Pionia\core\interceptions\BaseMiddleware`
 
 ```php
-use jetPhp\core\interceptions\BaseMiddleware
 
-class MySimpleMiddleware extends BaseMiddleware
+class MySimpleMiddleware extends \Pionia\core\interceptions\BaseMiddleware
 {
-    public function run(\jetPhp\request\Request $request,?\jetPhp\response\Response $response){
+    public function run(\Pionia\request\Request $request,?\Pionia\response\Response $response){
         if ($response){
             // here you can do logic that has access to both request and response
             // this will run after running the service. So there is a high chance that you can even access the response data here
@@ -267,7 +262,7 @@ Creating a middleware is not enough, you need to add them in our `kernel`.
 Head over to `index.php` and add it on this line
 ```php
 ->registerMiddleware([
-    'Jet\JetFramework\middlewares\SampleMiddlewareMySimpleMiddleware'
+    'application\middlewares\MySimpleMiddleware'
 ])
 ```
 That's it, your middleware is now ready to start running against every request and every response.
@@ -283,7 +278,7 @@ Imagine an app where users authenticate differently forexample for web and mobil
 This could be your advantage to define them seperately. You can also have only auth backend, example
 all your users can decide to authenticate using JWT. That's it. Implement that and you're done.
 
-All Auth Backends must extend the `jetPhp\core\interceptions\BaseAuthenticationBackend`, implement the 
+All Auth Backends must extend the `application\core\interceptions\BaseAuthenticationBackend`, implement the 
 `authenticate` method and return `ContextUserObject` or `null`
 
 That means in your backend, the only job you have is to query and set up the `ContextUserObject` accordingly.
@@ -305,7 +300,7 @@ Authentication Backends also have access to the ongoing request just incase you 
 Just like middlewares, you can find and add your auth backends to the `kernel` in `index.php` on this line
 
 ```php
-->registerAuthBackends(['Jet\JetFramework\authenticationBackends\MobileAuthBackend']) // add your authentication backends here
+->registerAuthBackends(['application\authenticationBackends\MobileAuthBackend']) // add your authentication backends here
 ```
 
 And that's it!!! 
