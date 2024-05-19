@@ -14,5 +14,5 @@ require_once BASEPATH . '/vendor/autoload.php';
 try {
     CommandInterface::setUp();
 } catch (Exception $e) {
-    echo $e->getMessage();
+
 }
