@@ -38,7 +38,9 @@ Your endpoint is now running on http://localhost:8000/api/v1/
 
 ## Quick Guide for Getting Started.
 
-Detailed Documentation to follow.
+You can follow along the documentation but its under active development.
+
+[Go to documentation here](https://pioniaphp-project.github.io/docs/)
 
 ### Creating a service.
 Create a new service in services folder. Services are normal PHP classes that extend `Pionia\request\BaseRestService`.
