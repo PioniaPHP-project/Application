@@ -40,7 +40,7 @@ Your endpoint is now running on http://localhost:8000/api/v1/
 
 You can follow along the documentation but its under active development.
 
-[Go to documentation here](https://pioniaphp-project.github.io/pionia-docs/)
+[Go to documentation here](https://pionia.netlify.app/)
 
 ### Creating a service.
 Create a new service in services folder. Services are normal PHP classes that extend `Pionia\request\BaseRestService`.

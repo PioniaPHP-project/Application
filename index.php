@@ -13,7 +13,7 @@ define('SETTINGS', BASEPATH . '/settings.ini');
 require_once BASEPATH . '/vendor/autoload.php';
 
 
-$routes = require_once BASEPATH . '/app/routes.php';
+$routes = require_once BASEPATH . '/app/Routes.php';
 
 
 $kernel = new CoreKernel($routes);
