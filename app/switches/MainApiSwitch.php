@@ -1,6 +1,6 @@
 <?php
 
-namespace application;
+namespace application\switches;
 
 use application\services\UserService;
 use Pionia\core\BaseApiServiceSwitch;

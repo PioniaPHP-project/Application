@@ -1,8 +1,8 @@
 <?php
-namespace application;
+namespace application\controller;
 
+use application\switches\MainApiSwitch;
 use Exception;
-use application\MainApiSwitch;
 use Pionia\core\BaseApiController;
 use Pionia\request\Request;
 use Pionia\response\BaseResponse;
