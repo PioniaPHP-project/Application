@@ -10,7 +10,7 @@ $router = new PioniaRouter();
  * Normally this is all you might need
  */
 $router->addGroup('application\controller\Controller')
-    ->post('api_v1', 'api_version_one');
+    ->post('apiV1', 'api_version_one');
 
 //...rest of your routes
 

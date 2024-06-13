@@ -27,7 +27,7 @@ class Controller extends BaseApiController
      * @param Request $request
      * @return BaseResponse
      */
-    public function api_v1(Request $request): BaseResponse
+    public function apiV1(Request $request): BaseResponse
     {
         try {
             return MainApiSwitch::processServices($request);
