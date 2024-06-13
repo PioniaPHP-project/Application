@@ -21,7 +21,7 @@ Please remember to replace `my_simple_project` with your project name
 > 3. 📂 services:- This is where our actual business logic resides.
 > 4. 📂 controller:- This is where our only controller resides. under normal circumstances, you will not need to touch this.
 > 5. 📄 switches:- This is where our main app switch resides. This is where we register all our services.
-> 6. 📄 Routes.php:- This is where our one and only endpoint resides.
+> 6. 📄 routes.php:- This is where our one and only endpoint resides.
 > 7. 📄 index.php:- This is our entry file to our project.
 > 8. 📄 pionia:- This is our commandline helper. For every command, we call this file.
 > 9. 📄 settings.ini:- All settings for our entire project reside here.
