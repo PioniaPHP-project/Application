@@ -2,17 +2,22 @@
 
 namespace application\services;
 
+
+use Exception;
 use Pionia\request\BaseRestService;
 use Pionia\response\BaseResponse;
+use Porm\Porm;
 
 class UserService extends BaseRestService
 {
-	/**
-	 * In the request object, you can hit this service using - {'ACTION': 'loginUser', 'SERVICE':'UserService' ...otherData}
-	 */
-	protected function loginUser(?array $data, ?array $files): BaseResponse
-	{
-		return BaseResponse::JsonResponse(0, 'You have reached login action', [$data, $files]);
-	}
+    /**
+     * @throws Exception
+     */
+    protected function login($data, $files): BaseResponse
+    {
+        //  you can handle your login logic here
+        $todos = Porm::from('todos')->all();
+        return BaseResponse::JsonResponse(0, "We reached well", $todos);
+    }
 
 }
