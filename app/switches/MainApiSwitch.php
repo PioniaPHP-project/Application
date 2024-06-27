@@ -3,7 +3,7 @@
 namespace application\switches;
 
 use application\services\UserService;
-use Pionia\core\BaseApiServiceSwitch;
+use Pionia\Core\BaseApiServiceSwitch;
 
 class MainApiSwitch extends BaseApiServiceSwitch
 {

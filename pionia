@@ -2,7 +2,7 @@
 <?php
 
 
-use Pionia\command\CommandInterface;
+use Pionia\Command\CommandInterface;
 
 define('BASEPATH', __DIR__);
 

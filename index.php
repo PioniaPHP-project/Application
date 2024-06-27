@@ -1,6 +1,6 @@
 <?php
 
-use Pionia\core\config\CoreKernel;
+use Pionia\Core\Config\CoreKernel;
 use Pionia\Logging\PioniaLogger;
 
 define('BASEPATH', __DIR__);
