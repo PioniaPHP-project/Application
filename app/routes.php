@@ -1,6 +1,5 @@
 <?php
 
-
 use Pionia\Core\Routing\PioniaRouter;
 
 $router = new PioniaRouter();
