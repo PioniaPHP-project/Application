@@ -23,6 +23,9 @@ if (!defined('logger')){
     define("logger", PioniaLogger::init());
 }
 
+/**
+ * Booting up the kernel to handle to incoming request
+ */
 $kernel = new CoreKernel($routes);
-
+$kernel->resolveCors();
 $response = $kernel->run();

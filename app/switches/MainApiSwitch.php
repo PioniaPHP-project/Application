@@ -2,7 +2,6 @@
 
 namespace application\switches;
 
-use application\services\UserService;
 use Pionia\Core\BaseApiServiceSwitch;
 
 class MainApiSwitch extends BaseApiServiceSwitch
@@ -15,7 +14,7 @@ class MainApiSwitch extends BaseApiServiceSwitch
     public function registerServices(): array
     {
         return [
-            'user' => new UserService(),
+
         ];
     }
 }
