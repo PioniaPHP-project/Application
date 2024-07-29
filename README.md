@@ -61,6 +61,79 @@ You can follow along the documentation but its under active development.
 
 You can also run ``` php pionia``` to get a list of all available commands.
 
+Pionia is basically a REST framework. But if you're intending to use it fullstack with 
+any frontend framework of your choice.
+Run the command :- 
+```bash 
+php pionia frontend:scaffold
+```
+
+From there, follow the prompts till you get what you need. If your framework uses `vite`, please share it and we add it to our scaffolding.
+
+Pionia can also serve your SPA from the root of the app. This implies you only host Pionia in the live environment and Pionia will take care 
+of serving your frontend. 
+
+If you want to build and serve your frontend with Pionia.
+```bash 
+php pionia frontend:build
+```
+
+If you want to revert(remove the build files from your Pionia code), you can reverse this by running 
+
+```bash
+php pionia frontend:build:clean
+```
+
+Assuming you wanted to use like VueJs and by mistake you scaffold React. Running the following 
+command will remove the entire frontend and the configs added to your `settings.ini`
+
+```bash 
+php pionia frontend:drop
+```
+
+If you're making any http requests from your frontend, we recommend using the `jet-fetch` library.
+However, other framework-specific packages are still okay like the `z-fetch` for `z-js`.
+
+In the root of your project, run :-
+
+NPM
+```bash
+npm install jet-fetch
+```
+
+YARN
+```bash 
+yarn add jet-fetch
+```
+
+Then use the `moonlightRequest` method of the package to query any moonlight-powered backend.
+
+```js
+import { Jet } from 'jet-fetch';
+const jet = new Jet({
+  baseUrl: 'http://localhost:8000/api/',
+});
+
+// unauthenticated requests
+const res = await jet.moonlightRequest(
+    { 
+           service: 'yourService', 
+           action: 'yourAction', 
+           ...anyOtherData 
+    }, 'v2/');
+
+// for jwt-authenticated requests
+const res = await jet.secureMoonlightRequest(
+        {
+               service: 'yourService',
+               action: 'yourAction',
+               ...anyOtherData
+        }, 'v2/');
+```
+
+For details about `jet-fetch`, follow the [readme guide provided here.](https://github.com/OSCA-Kampala-Chapter/jet-fetch?tab=readme-ov-file#about-jet-fetch-library)
+With the above, Pionia peeps in the frontend too!
+
 ## Contributions
 
 All forms of contributions are welcome from documentation, coding, community development and many more.
