@@ -18,7 +18,7 @@ Please remember to replace `my_simple_project` with your project name
 app
 ├── switches
 ├── services
-├── authenticationBackends
+├── authentications
 ├── commands
 ├── middlewares
 ├── routes.php
@@ -31,7 +31,7 @@ pionia
 README.md
 settings.ini
 ```
-> 1. 📂 authenticationBackends:-
+> 1. 📂 authentication:-
        This is where authentication backends should reside. These are the strategies that the app will use to authenticate users to the app context. 
 > 2. 📂 middlewares:- This is where all request middlewares reside. These are the classes that run on every request and every response.
 > 3. 📂 services:- This is where our actual business logic resides.
@@ -53,7 +53,7 @@ php pionia serve -p8080 # http://localhost:8080
 
 Your endpoint is now running on http://localhost:8000/api/v1/
 
-## Quick Guide for Getting Started.
+## Official Documentation
 
 You can follow along the documentation but its under active development.
 
