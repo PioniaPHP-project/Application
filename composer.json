@@ -1,11 +1,16 @@
 {
     "name": "pionia/pionia-app",
-    "description": "The first truly restful PHP framework based on Moonlight architecture.",
+    "description": "Making Restful API development more restful \uD83D\uDCA4",
     "type": "project",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "application\\": "app/"
+            "Application\\": "",
+            "Application\\Services\\": "services/",
+            "Application\\Switches\\": "switches/",
+            "Application\\Authentications\\": "authentications/",
+            "Application\\Middlewares\\": "middlewares/",
+            "Application\\Commands\\": "commands/"
         }
     },
     "authors": [
@@ -18,7 +23,12 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.1",
-      "ext-pdo": "*",
-        "pionia/pionia-core": "^1.1"
+        "ext-pdo": "*",
+        "pionia/pionia-core": "^2.0"
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "php storage/scripts/rename.php"
+        ]
     }
 }

@@ -1,18 +1,11 @@
 #!/usr/bin/env php
 <?php
 
-
-use Pionia\Command\CommandInterface;
-
-define('BASEPATH', __DIR__);
-
-// set our settings globally
-define('SETTINGS', BASEPATH . '/settings.ini');
-
-require_once BASEPATH . '/vendor/autoload.php';
-
-try {
-    CommandInterface::setUp();
-} catch (Exception $e) {
-
+if (!defined('PIONIA_START')) {
+    define('PIONIA_START', microtime(true));
 }
+
+$code = (require __DIR__ .'/bootstrap/application.php')
+        ->bootConsole();
+
+exit($code);
