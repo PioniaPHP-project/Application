@@ -3,3 +3,9 @@ vendor
 composer.lock
 
 **.log
+
+.DM_Store
+
+storage/logs
+storage/cache
+storage/media

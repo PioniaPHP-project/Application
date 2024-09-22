@@ -1,9 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-if (!defined('PIONIA_START')) {
-    define('PIONIA_START', microtime(true));
-}
+/**
+ * ----------------------------------------------------------
+ * Pionia Cli Application
+ * ----------------------------------------------------------
+ *
+ * This file is the entry point for the Pionia Cli Application.
+ *
+ * It extends the RESTFUL Application in `/bootstrap/application.php` and boots the console.
+ *
+ * This also implies that the console application has full access to the entire application context including
+ * the service container, configuration, and other application services.
+ *
+ * @package  Pionia
+ * @version  ^2.0
+ */
 
 $code = (require __DIR__ .'/bootstrap/application.php')
         ->bootConsole();

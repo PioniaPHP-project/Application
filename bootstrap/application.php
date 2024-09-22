@@ -83,21 +83,71 @@ $app = new PioniaApplication(BASEPATH);
  * ---------------------------------------------------------------
  * >>>>>
  */
-//$app->booting(function () {
-//    // Add your booting hooks here
-//});
+/**
+ * ---------------------------------------------------------------
+ * Hooks here run before the application is booted
+ * Can be called multiple times to add more hooks
+ * They have no access to the application instance
+ * ---------------------------------------------------------------
+ */
+$app->booting(function () {
+    // Add your booting hooks here
+});
 
-//$app->booted(function ($app) {
-//    // Add your booted hooks here
-//});
+/**
+ * ---------------------------------------------------------------
+ * Hooks here run after the application is booted
+ * Can be called multiple times to add more hooks
+ * They have access to the application instance
+ * ---------------------------------------------------------------
+ */
 
-//$app->terminating(function ($app) {
-//    // Add your terminating hooks here
-//});
+$app->booted(function (PioniaApplication $app) {
+    // Add your booted hooks here
+});
 
-//$app->terminated(function () {
-//    // Add your terminated hooks here
-//});
+/**
+ * ---------------------------------------------------------------
+ * Hooks here run before the application is terminated
+ * Can be called multiple times to add more hooks
+ * They have access to the application instance
+ * ---------------------------------------------------------------
+ */
+$app->terminating(function (PioniaApplication $app) {
+    // Add your terminating hooks here
+});
+
+/**
+ * ---------------------------------------------------------------
+ * Hooks here run after the application is terminated
+ * Can be called multiple times to add more hooks
+ * They have no access to the application instance
+ * ---------------------------------------------------------------
+ */
+$app->terminated(function () {
+    // Add your terminated hooks here
+});
+
+/**
+ * ---------------------------------------------------------------
+ * Add Middlewares to the application
+ * ---------------------------------------------------------------
+ * This method is used to add middlewares to the application.
+ * >>>>>
+ *
+ */
+//$app->addMiddleware();
+
+/**
+ * ---------------------------------------------------------------
+ * Add aliases to the application
+ * ---------------------------------------------------------------
+ * This method is used to add an alias to the application.
+ *
+ * This can be later accessed using the `alias($name)` function.
+ * >>>>>
+ */
+//$app->addAlias($aliasName, $aliasValue);
 
 /**
  * ---------------------------------------------------------------

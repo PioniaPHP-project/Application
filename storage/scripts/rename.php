@@ -38,5 +38,4 @@ if (file_exists($file)) {
     $env = implode("\n", $env);
 
     file_put_contents($file, $env);
-
 }
