@@ -9,7 +9,7 @@ It runs on top of ✨ Moonlight ✨ architecture.
 ## Creating a project
 
 ```bash
-composer create-project pionia/pionia project_name
+composer create-project pionia/pionia-app project_name
 ```
 Please remember to replace `project_name` with your project name
 
