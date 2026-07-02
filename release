@@ -75,6 +75,21 @@ tag_commit() {
     git rev-parse "refs/tags/${TAG}^{commit}"
 }
 
+push_branch() {
+    local branch="$1"
+    echo "→ Pushing branch ${branch} to origin..."
+    git push -u origin "refs/heads/${branch}:refs/heads/${branch}"
+}
+
+push_tag() {
+    echo "→ Pushing tag ${TAG} to origin..."
+    git push origin "refs/tags/${TAG}"
+}
+
+branch_tag_name_collision() {
+    git show-ref --verify --quiet "refs/heads/$TAG" && tag_exists
+}
+
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
     echo "error: not a git repository" >&2
     exit 1
@@ -145,8 +160,7 @@ publish_to_github() {
         exit 1
     fi
 
-    echo "→ Pushing ${TAG} to origin..."
-    git push origin "$TAG"
+    push_tag
 
     if gh release view "$TAG" --repo "$repo" >/dev/null 2>&1; then
         echo "→ GitHub Release ${TAG} already exists on ${repo}"
@@ -177,7 +191,7 @@ if $PUBLISH_EXISTING; then
 
     BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     echo "→ Publishing existing tag ${TAG} from branch ${BRANCH}..."
-    git push -u origin "$BRANCH" 2>/dev/null || git push origin "$BRANCH"
+    push_branch "$BRANCH"
     publish_to_github
     exit 0
 fi
@@ -191,6 +205,10 @@ fi
 if tag_exists; then
     echo "error: tag ${TAG} already exists — use: ./release --publish ${TAG}" >&2
     exit 1
+fi
+
+if branch_tag_name_collision; then
+    echo "note: branch and tag share the name ${TAG} — pushes use refs/heads/ and refs/tags/ explicitly" >&2
 fi
 
 if [[ ! -f release ]] || [[ ! -d .release/template ]]; then
@@ -316,7 +334,7 @@ echo "  composer create-project pionia/pionia-app my-api -- ${TAG}"
 
 if [[ "$PUSH" == true ]]; then
     echo ""
-    git push -u origin "$BRANCH"
+    push_branch "$BRANCH"
     publish_to_github
 else
     echo ""
