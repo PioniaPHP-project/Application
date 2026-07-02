@@ -10,13 +10,6 @@ cd my-api
 php pionia serve
 ```
 
-Or scaffold from a core install:
-
-```bash
-php pionia new my-api --install
-php pionia new my-api --install --with-frontend=react-ts
-```
-
 Default URL: `http://127.0.0.1:8000/` (`environment/.env` → `PORT`; `[roadrunner]` in `settings.ini` uses the same default).
 
 ## API (Moonlight)
@@ -137,18 +130,6 @@ Document actions with `@moonlight-*` PHPDoc on service classes:
 ```bash
 php pionia api:docs --ui
 open http://127.0.0.1:8000/docs    # when DEBUG or DOCS_ENABLED
-```
-
-## Monorepo development (PioniaCore + this template)
-
-When developing core and the app template side by side:
-
-```bash
-cd /path/to/JetFramework
-composer config repositories.pionia-core path ../PioniaCore
-composer require pionia/pionia-core:@dev
-composer install
-php pionia serve
 ```
 
 Remove the path repository before publishing a Packagist release (consumers install core from Packagist).
