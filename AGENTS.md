@@ -7,9 +7,8 @@ Minimal Moonlight app (`pionia/pionia-app`). For framework internals see [Pionia
 | Path | Purpose |
 |------|---------|
 | `bootstrap/application.php` | `AppRealm::create()` |
-| `bootstrap/routes.php` | Register switches: `router($app)->switch(MainSwitch::class, 'v1')` |
 | `services/` | `*Action` methods; document with `@moonlight-*` |
-| `switches/` | Service alias → class map |
+| `switches/` | Service alias → class map (`MainSwitch` registered in `settings.ini` → `[app_switches]`) |
 | `environment/` | `.env` + `settings.ini` |
 | `public/index.php` | HTTP entry → `bootHttp()` |
 | `worker.php` | RoadRunner worker (`RR_MODE` → HTTP, jobs, Centrifuge) |
@@ -35,7 +34,7 @@ Minimal Moonlight app (`pionia/pionia-app`). For framework internals see [Pionia
 
 - Versioned prefix: `/api/v1/` — use `apiVersionPath()`, not bare `/api/`.
 - POST body: `{ "service", "action", ...params }`.
-- Default port **8003** (`PORT` in `.env`, `[roadrunner] PORT` in settings).
+- Default port **8000** (`PORT` in `.env`, `[roadrunner] PORT` in settings).
 
 ## Common tasks
 

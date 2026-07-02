@@ -10,7 +10,7 @@ server:
   relay: pipes
 
 http:
-  address: 127.0.0.1:8003
+  address: 127.0.0.1:8000
   middleware: ["gzip"]
   pool:
     num_workers: 2
@@ -34,7 +34,7 @@ jobs:
 
 # Centrifugo WebSockets (optional — composer require roadrunner-php/centrifugo):
 # centrifuge:
-#   proxy_address: "http://127.0.0.1:8003/api"
+#   proxy_address: "http://127.0.0.1:8000/api"
 #   grpc_api: true
 
 logs:

@@ -17,7 +17,7 @@ php pionia new my-api --install
 php pionia new my-api --install --with-frontend=react-ts
 ```
 
-Default URL: `http://127.0.0.1:8003/` (`environment/.env` → `PORT`; `[roadrunner]` in `settings.ini` uses the same default).
+Default URL: `http://127.0.0.1:8000/` (`environment/.env` → `PORT`; `[roadrunner]` in `settings.ini` uses the same default).
 
 ## API (Moonlight)
 
@@ -33,8 +33,8 @@ Register services in `switches/MainSwitch.php`. Dispatch with JSON:
 | `/api/v1/` | POST | Service actions |
 
 ```bash
-curl -s http://127.0.0.1:8003/api/v1/ping
-curl -s -X POST http://127.0.0.1:8003/api/v1/ \
+curl -s http://127.0.0.1:8000/api/v1/ping
+curl -s -X POST http://127.0.0.1:8000/api/v1/ \
   -H 'Content-Type: application/json' \
   -d '{"service":"welcome","action":"ping"}'
 ```
@@ -71,7 +71,7 @@ pionia              CLI entry
 
 ```bash
 php pionia frontend:scaffold --framework=react-ts --yes
-php pionia serve              # terminal 1 — API on PORT (8003)
+php pionia serve              # terminal 1 — API on PORT (8000)
 php pionia frontend:dev       # terminal 2 — Vite on :5173, proxies /api
 php pionia frontend:build     # production — copies dist/ → public/
 ```
@@ -96,7 +96,7 @@ RoadRunner packages ship in **require-dev**. After `composer install`:
 
 ```bash
 php pionia rr:setup        # downloads ./rr binary (alias: composer rr:setup)
-php pionia runserver       # foreground on http://127.0.0.1:8003
+php pionia runserver       # foreground on http://127.0.0.1:8000
 php pionia runserver --detach
 php pionia runserver:logs
 php pionia stopserver
@@ -104,7 +104,7 @@ php pionia stopserver
 
 Enable Moonlight jobs in `environment/settings.ini` (`[jobs] ENABLED=true`) when using the jobs pool.
 
-Port resolution: CLI `--port` → `.env` `PORT` / `SERVER_PORT` → `[roadrunner]` in `settings.ini` → `.rr.yaml` → **8003**.
+Port resolution: CLI `--port` → `.env` `PORT` / `SERVER_PORT` → `[roadrunner]` in `settings.ini` → `.rr.yaml` → **8000**.
 
 Production: switch `jobs.pipelines.moonlight` to **redis** in `.rr.yaml` and set `[jobs] ENABLED=true`.
 
@@ -136,7 +136,7 @@ Document actions with `@moonlight-*` PHPDoc on service classes:
 
 ```bash
 php pionia api:docs --ui
-open http://127.0.0.1:8003/docs    # when DEBUG or DOCS_ENABLED
+open http://127.0.0.1:8000/docs    # when DEBUG or DOCS_ENABLED
 ```
 
 ## Monorepo development (PioniaCore + this template)
