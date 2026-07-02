@@ -49,7 +49,7 @@ Usage:
   ./release --publish <tag>
 
   <version>   Tag version, e.g. 3.0.0 or v3.0.0-beta
-  --push      Push branch + tags to origin and create a GitHub Release (requires gh auth)
+  --push      Cut (or publish if tag exists) + push branch/tags + GitHub Release
   --publish   Push an existing local tag and create a GitHub Release (no re-cut)
 
 Examples:
@@ -203,7 +203,14 @@ if [[ "$BRANCH" == "HEAD" ]]; then
 fi
 
 if tag_exists; then
+    if [[ "$PUSH" == true ]]; then
+        echo "→ Tag ${TAG} already exists locally — publishing (branch + tag + GitHub Release)..."
+        push_branch "$BRANCH"
+        publish_to_github
+        exit 0
+    fi
     echo "error: tag ${TAG} already exists — use: ./release --publish ${TAG}" >&2
+    echo "       or:     ./release ${TAG#v} --push   (same, if tag is already cut)" >&2
     exit 1
 fi
 
