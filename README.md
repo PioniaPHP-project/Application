@@ -1,133 +1,170 @@
-# 🚀Pionia Framework🚀
-![Pionia Logo](/static/favicon.png) 
+# Pionia Application (`pionia/pionia-app`)
 
-Pionia Framework is a PHP framework for building RESTFUL APIs. 
-It is a lightweight framework that is easy to use and easy to understand.
+Official **Pionia v3** application template. Moonlight REST API on **PHP 8.5+** with `AppRealm` bootstrap, CLI, optional Vite frontend, and optional RoadRunner workers.
 
-It runs on top of ✨ Moonlight ✨ architecture. 
-
-## Creating a project
+## Create a project
 
 ```bash
-composer create-project pionia/pionia-app project_name
+composer create-project pionia/pionia-app my-api
+cd my-api
+php pionia serve
 ```
-Please remember to replace `project_name` with your project name
 
-## Directory
-```md
-|-authentications
-|-bootstrap
-|----application.php
-|----routes.php
-|-commands
-|-environment
-|----.env
-|----settings.ini
-|-middlewares
-|-public
-|-- .htaccess
-|-- index.php
-services
-static
-|-- favicon.png
-|-- pionia_logo.webp
-|-- favicon.ico
-|-- bootstrap.min.css
-storage
-|-- cache
-|-- logs
-|-- scripts
-vendor
-.gitignore
-composer.json
-composer.lock
-pionia
-README.md
-```
-> 1. 📂 authentication:-
-       This is where authentication backends should reside. These are the strategies that the app will use to authenticate users to the app context. 
-> 2. 📂 middlewares:- This is where all request middlewares reside. These are the classes that run on every request and every response.
-> 3. 📂 services:- This is where our actual business logic resides.
-> 4. 📂 commands:- This is where all our commandline commands reside.
-> 5. 📂 environment:- This is where all our environment settings reside.
-> 6. 📂 storage:- This is where all our storage files reside.
-> 7. 📂 static:- This is where all our static files reside. Default files found here should never be deleted.
-> 8. 📂 vendor:- This is where all our composer dependencies reside.
-> 9. 📄 .gitignore:- This is where we specify files that should not be tracked by git.
-> 10. 📄 composer.json:- This is where we specify all our composer dependencies.
-> 11. 📄 composer.lock:- This is where we specify all our composer dependencies.
-> 12. 📄 pionia:- This is our commandline helper. For every command, we call this file. 
-> 13. 📂 public:- This is where our public files reside. This is where our entry file resides. 
-> 14. 📄 switches:- This is where our main app switch resides. This is where we register all our services. 
-> 15. 📄 pionia:- This is our commandline helper. For every command, we call this file.
-> 16. 📄 README.md:- This is our documentation file. This is where we document our project.
-> 17. 📂 bootstrap:- This is where our application bootstrapping files reside. This is where we register all our routes.
+Or scaffold from a core install:
 
-After installation, just run the following to start the server
 ```bash
-php pionia serve  # http://localhost:8000
+php pionia new my-api --install
+php pionia new my-api --install --with-frontend=react-ts
 ```
 
-By default, the server will run on port 8000, to change that, run the following
+Default URL: `http://127.0.0.1:8003/` (`environment/.env` → `PORT`; `[roadrunner]` in `settings.ini` uses the same default).
+
+## API (Moonlight)
+
+Register services in `switches/MainSwitch.php`. Dispatch with JSON:
+
+```json
+{ "service": "welcome", "action": "ping" }
+```
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/api/v1/ping` | GET | Framework health check |
+| `/api/v1/` | POST | Service actions |
+
 ```bash
- php pionia serve --port 8080 # http://localhost:8080
+curl -s http://127.0.0.1:8003/api/v1/ping
+curl -s -X POST http://127.0.0.1:8003/api/v1/ \
+  -H 'Content-Type: application/json' \
+  -d '{"service":"welcome","action":"ping"}'
 ```
 
-Your endpoint is now running on http://localhost:8080/api/v1/
+Use path helpers in code — not hard-coded strings: `apiVersionPath()`, `apiPingPath()`, `apiBase()`.
 
-## Official Documentation
+## Directory layout
 
-You can follow along the documentation but its under active development.
+```
+bootstrap/          AppRealm + routes
+environment/        .env, settings.ini
+public/             Web root (index.php)
+services/           Business logic (*Action methods)
+switches/           ApiSwitch subclasses (service registry per API version)
+storage/            cache, logs
+worker.php          RoadRunner worker entry
+.rr.yaml            RoadRunner config (HTTP + jobs)
+pionia              CLI entry
+```
 
-[Go to documentation here](https://pionia.netlify.app/)
+`middlewares/`, `authentications/`, and `commands/` are created when you run `make:middleware`, `make:auth`, or `make:command`.
 
-You can also run ``` php pionia``` to get a list of all available commands.
+### Base classes (extend these)
 
-If you're making any http requests from your frontend, we recommend using the `jet-fetch` library.
-However, other framework-specific packages are still okay like the `z-fetch` for `z-js` and `axios`.
+| Kind | Class |
+|------|-------|
+| Switch | `Pionia\Http\Switches\ApiSwitch` |
+| Service | `Pionia\Http\Services\Service` |
+| Authentication | `Pionia\Auth\Authentication` |
+| Middleware | `Pionia\Middlewares\Middleware` |
+| Command | `Pionia\Console\Command` |
 
-In the root of your project, run :-
+## Frontend (optional)
 
-NPM
 ```bash
-npm install jet-fetch
+php pionia frontend:scaffold --framework=react-ts --yes
+php pionia serve              # terminal 1 — API on PORT (8003)
+php pionia frontend:dev       # terminal 2 — Vite on :5173, proxies /api
+php pionia frontend:build     # production — copies dist/ → public/
 ```
 
-YARN
-```bash 
-yarn add jet-fetch
-```
+CORS for `:5173` is preconfigured in `environment/settings.ini`.
 
-Then use the `moonlightRequest` method of the package to query any moonlight-powered backend.
+## Background work
 
-```js
-import { Jet } from 'jet-fetch';
-const jet = new Jet({
-  baseUrl: 'http://localhost:8000/api/',
+Post-response tasks (logging, webhooks) — **not a new thread**; runs after the client gets JSON:
+
+```php
+defer(function () use ($order) {
+    logger()->info('Processed after response', ['id' => $order->id]);
 });
-
-// unauthenticated requests
-const res = await jet.moonlightRequest(
-    { 
-           service: 'yourService', 
-           action: 'yourAction', 
-           ...anyOtherData 
-    }, 'v2/');
-
-// for jwt-authenticated requests
-const res = await jet.secureMoonlightRequest(
-        {
-               service: 'yourService',
-               action: 'yourAction',
-               ...anyOtherData
-        }, 'v2/');
 ```
 
-For details about `jet-fetch`, follow the [readme guide provided here.](https://github.com/OSCA-Kampala-Chapter/jet-fetch?tab=readme-ov-file#about-jet-fetch-library)
+Requires `composer require react/promise`. Durable jobs (email, reports) use RoadRunner Jobs — see [Background work](https://pionia.netlify.app/documentation/background-work/).
 
+## RoadRunner (persistent workers)
 
-## Contributions
+RoadRunner packages ship in **require-dev**. After `composer install`:
 
-All forms of contributions are welcome from documentation, coding, community development and many more.
+```bash
+php pionia rr:setup        # downloads ./rr binary (alias: composer rr:setup)
+php pionia runserver       # foreground on http://127.0.0.1:8003
+php pionia runserver --detach
+php pionia runserver:logs
+php pionia stopserver
+```
 
-### 🔥🔥🔥 Goodluck, and happy coding 🔥🔥🔥
+Enable Moonlight jobs in `environment/settings.ini` (`[jobs] ENABLED=true`) when using the jobs pool.
+
+Port resolution: CLI `--port` → `.env` `PORT` / `SERVER_PORT` → `[roadrunner]` in `settings.ini` → `.rr.yaml` → **8003**.
+
+Production: switch `jobs.pipelines.moonlight` to **redis** in `.rr.yaml` and set `[jobs] ENABLED=true`.
+
+## Production performance (OPcache, opt-in)
+
+Performance files are **not** shipped in the default template. Run once on deploy:
+
+```bash
+composer install --no-dev -o
+php pionia optimize
+```
+
+This installs `bootstrap/preload.php`, `environment/php.ini.production.example`, and `[performance]` in `settings.ini`, then generates `storage/bootstrap/preload.php`.
+
+- Point `php.ini` `opcache.preload` at `bootstrap/preload.php`
+- Restart RoadRunner or PHP-FPM after deploy
+- `php pionia optimize:clear --scaffold` removes opt-in files
+
+RoadRunner without global `php.ini`:
+
+```yaml
+server:
+  command: "php -d opcache.enable_cli=1 -d opcache.preload=./bootstrap/preload.php worker.php"
+```
+
+## API documentation
+
+Document actions with `@moonlight-*` PHPDoc on service classes:
+
+```bash
+php pionia api:docs --ui
+open http://127.0.0.1:8003/docs    # when DEBUG or DOCS_ENABLED
+```
+
+## Monorepo development (PioniaCore + this template)
+
+When developing core and the app template side by side:
+
+```bash
+cd /path/to/JetFramework
+composer config repositories.pionia-core path ../PioniaCore
+composer require pionia/pionia-core:@dev
+composer install
+php pionia serve
+```
+
+Remove the path repository before publishing a Packagist release (consumers install core from Packagist).
+
+## Documentation
+
+| Resource | URL |
+|----------|-----|
+| User guides | [pionia.netlify.app](https://pionia.netlify.app) |
+| Helpers (`defer`, Porm, cache, …) | [Helpers](https://pionia.netlify.app/documentation/helpers/) |
+| Framework architecture | [PioniaCore AGENTS.md](https://github.com/PioniaPHP-project/PioniaCore/blob/main/AGENTS.md) |
+| This app | `AGENTS.md` (short app notes) |
+
+## Requirements
+
+- PHP **8.5+**
+- Composer
+- `pionia/pionia-core` **^3.0**
+- `ext-pdo` (SQLite default; configure other drivers in `settings.ini`)

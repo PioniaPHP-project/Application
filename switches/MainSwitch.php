@@ -1,25 +1,17 @@
 <?php
 
-/**
- * This switch is auto-generated from pionia cli.
- */
-
 namespace Application\Switches;
 
-use Application\Services\AuthService;
+use Application\Services\WelcomeService;
 use Pionia\Collections\Arrayable;
-use Pionia\Http\Switches\BaseApiServiceSwitch;
+use Pionia\Http\Switches\ApiSwitch;
 
-class MainSwitch extends BaseApiServiceSwitch
+class MainSwitch extends ApiSwitch
 {
-	/**
-	 * Register services here
-	 */
-	public function registerServices(): Arrayable
-	{
-		return arr([
-		# Register your services here like `auth=>AuthService::class`
-            'auth' => AuthService::class,
-		]);
-	}
+    public static function registerServices(): Arrayable
+    {
+        return arr([
+            'welcome' => WelcomeService::class,
+        ]);
+    }
 }

@@ -1,41 +1,29 @@
 <?php
 
 /**
- * Get the .env file
- * And the folder name as the APP_NAME
+ * Set APP_NAME in .env from the project directory name (post-create-project).
  */
 $appDir = dirname(__DIR__, 2);
-
 $file = $appDir . DIRECTORY_SEPARATOR . 'environment' . DIRECTORY_SEPARATOR . '.env';
 
-
-if (file_exists($file)) {
-    $env = file_get_contents($file);
-
-    $env = explode("\n", $env);
-
-    $env = array_filter($env, function ($line) {
-        return !empty($line);
-    });
-
-    $env = array_map(function ($line) {
-        return explode('=', $line);
-    }, (array)$env);
-
-    $env = array_reduce($env, function ($carry, $line) {
-        $carry[$line[0]] = $line[1];
-        return $carry;
-    }, []);
-
-    $env['APP_NAME'] = basename(rtrim($appDir, '/'));
-
-    // Save the new .env file
-    $env = array_map(function ($key, $value) {
-        $res = $key . '=' . $value;
-        return str_starts_with($res, '#') ? $res : $res . PHP_EOL;
-    }, array_keys($env), $env);
-
-    $env = implode("\n", $env);
-
-    file_put_contents($file, $env);
+if (!is_file($file)) {
+    return;
 }
+
+$lines = file($file, FILE_IGNORE_NEW_LINES);
+if ($lines === false) {
+    return;
+}
+
+$name = basename($appDir);
+$out = [];
+
+foreach ($lines as $line) {
+    if (str_starts_with(trim($line), 'APP_NAME=')) {
+        $out[] = 'APP_NAME="' . addslashes($name) . '"';
+    } else {
+        $out[] = $line;
+    }
+}
+
+file_put_contents($file, implode(PHP_EOL, $out) . PHP_EOL);

@@ -1,34 +1,47 @@
 {
     "name": "pionia/pionia-app",
-    "description": "Making Restful API development more restful \uD83D\uDCA4",
+    "description": "Pionia application template — Moonlight REST API on PHP 8.5+",
     "type": "project",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "Application\\": "",
-            "Application\\Services\\": "services/",
-            "Application\\Switches\\": "switches/",
-            "Application\\Authentications\\": "authentications/",
-            "Application\\Middlewares\\": "middlewares/",
-            "Application\\Commands\\": "commands/"
-        }
-    },
     "authors": [
         {
             "name": "jet2018",
             "email": "ezrajet9@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
-    "prefer-stable": true,
     "require": {
-        "php": ">=8.1",
+        "php": ">=8.5",
         "ext-pdo": "*",
-        "pionia/pionia-core": "^2.0"
+        "pionia/pionia-core": "^3.0",
+        "react/promise": "^3.2"
+    },
+    "require-dev": {
+        "spiral/roadrunner-http": "^3.5",
+        "spiral/roadrunner-cli": "^2.6",
+        "spiral/roadrunner-jobs": "^4.0",
+        "nyholm/psr7": "^1.8"
+    },
+    "suggest": {
+        "roadrunner-php/centrifugo": "WebSocket RPC via RoadRunner Centrifuge plugin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Application\\": "./"
+        }
     },
     "scripts": {
+        "serve": "php pionia serve",
+        "runserver": "php pionia runserver",
+        "rr:setup": "@php pionia rr:setup",
+        "optimize": "@php pionia optimize",
         "post-create-project-cmd": [
-            "php storage/scripts/rename.php"
-        ]
-    }
+            "@php storage/scripts/rename.php"
+        ],
+        "post-install-cmd": [
+            "@php -r \"if (is_file('vendor/bin/rr') && !is_file('rr')) { echo \\\"Run: composer rr:setup to install the RoadRunner binary\\\\n\\\"; }\""
+        ],
+        "pionia": "php pionia"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
