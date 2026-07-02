@@ -67,6 +67,14 @@ EOF
 TAG="$VERSION"
 [[ "$TAG" == v* ]] || TAG="v$VERSION"
 
+tag_exists() {
+    git show-ref --verify --quiet "refs/tags/$TAG"
+}
+
+tag_commit() {
+    git rev-parse "refs/tags/${TAG}^{commit}"
+}
+
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
     echo "error: not a git repository" >&2
     exit 1
@@ -117,7 +125,7 @@ gh_prerelease_args() {
 
 publish_to_github() {
     local tag_sha
-    tag_sha="$(git rev-parse "${TAG}^{commit}")"
+    tag_sha="$(tag_commit)"
 
     if ! command -v gh >/dev/null 2>&1; then
         echo "error: GitHub CLI (gh) is required for publishing" >&2
@@ -158,12 +166,16 @@ publish_to_github() {
 }
 
 if $PUBLISH_EXISTING; then
-    if ! git rev-parse "$TAG" >/dev/null 2>&1; then
-        echo "error: tag ${TAG} does not exist locally" >&2
+    if ! tag_exists; then
+        if git show-ref --verify --quiet "refs/heads/$TAG"; then
+            echo "error: ${TAG} is a branch name, not a tag — run: ./release ${TAG#v} --push" >&2
+        else
+            echo "error: tag ${TAG} does not exist locally" >&2
+        fi
         exit 1
     fi
 
-  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+    BRANCH="$(git rev-parse --abbrev-ref HEAD)"
     echo "→ Publishing existing tag ${TAG} from branch ${BRANCH}..."
     git push -u origin "$BRANCH" 2>/dev/null || git push origin "$BRANCH"
     publish_to_github
@@ -176,7 +188,7 @@ if [[ "$BRANCH" == "HEAD" ]]; then
     exit 1
 fi
 
-if git rev-parse "$TAG" >/dev/null 2>&1; then
+if tag_exists; then
     echo "error: tag ${TAG} already exists — use: ./release --publish ${TAG}" >&2
     exit 1
 fi
@@ -293,7 +305,7 @@ rm -rf "$TOOLING_BAK"
 git add release .release
 git commit -m "Restore release tooling after ${TAG}"
 
-TAG_SHA="$(git rev-parse "${TAG}^{commit}")"
+TAG_SHA="$(tag_commit)"
 
 echo ""
 echo "Released ${TAG} locally (${TAG_SHA})"
