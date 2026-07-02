@@ -11,7 +11,7 @@ Minimal Moonlight app (`pionia/pionia-app`). For framework internals see [Pionia
 | `switches/` | Service alias → class map (`MainSwitch` registered in `settings.ini` → `[app_switches]`) |
 | `environment/` | `.env` + `settings.ini` |
 | `public/index.php` | HTTP entry → `bootHttp()` |
-| `worker.php` | RoadRunner worker (`RR_MODE` → HTTP, jobs, Centrifuge) |
+| `worker.php` | RoadRunner worker (`RR_MODE` → HTTP, jobs) |
 | `.rr.yaml` | RoadRunner config (HTTP + jobs + RPC) |
 | `php pionia optimize` | Opt-in production performance (installs preload files + generates caches) |
 | `php pionia rr:setup` | `composer rr:setup` — downloads `./rr` |

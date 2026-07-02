@@ -21,9 +21,6 @@
         "spiral/roadrunner-jobs": "^4.0",
         "nyholm/psr7": "^1.8"
     },
-    "suggest": {
-        "roadrunner-php/centrifugo": "WebSocket RPC via RoadRunner Centrifuge plugin"
-    },
     "scripts": {
         "serve": "php pionia serve",
         "runserver": "php pionia runserver",

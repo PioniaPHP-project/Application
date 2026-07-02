@@ -32,11 +32,6 @@ jobs:
         prefetch: 100
       # Production: driver: redis + config.addrs (see README — Background work)
 
-# Centrifugo WebSockets (optional — composer require roadrunner-php/centrifugo):
-# centrifuge:
-#   proxy_address: "http://127.0.0.1:8000/api"
-#   grpc_api: true
-
 logs:
   mode: development
   level: info
