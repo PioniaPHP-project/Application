@@ -13,3 +13,5 @@
 .pid
 .idea/
 .DS_Store
+/storage/bootstrap/*
+!/storage/bootstrap/.gitkeep
