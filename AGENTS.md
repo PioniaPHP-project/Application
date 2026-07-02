@@ -72,8 +72,11 @@ Path-link to monorepo core: `composer config repositories.pionia-core path ../Pi
 Branch-only tooling (`release`, `.release/`) is removed from tagged commits.
 
 ```bash
-./release 3.0.0          # clean runtime + dev scaffold, tag, restore tooling
-./release 3.0.0 --push   # push branch and tags to origin
+./release 3.0.0              # clean, tag locally, restore tooling
+./release 3.0.0 --push       # same + push branch/tags + GitHub Release
+./release --publish v3.0.0   # publish an existing local tag to GitHub
 ```
+
+Requires [GitHub CLI](https://cli.github.com/) (`gh auth login`) for `--push` / `--publish`.
 
 Update `.release/template/` when default app files change.

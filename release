@@ -1,39 +1,68 @@
 #!/usr/bin/env bash
 #
-# Release the pionia-app template under a version tag.
+# Release the pionia-app template under a version tag and publish to GitHub.
 #
 # Branch-only tooling: this script and .release/ are removed from the tagged
 # commit, then restored on the branch for the next release.
 #
 # Usage:
 #   ./release 3.0.0
-#   ./release v3.0.0 --push
+#   ./release 3.0.0 --push              # push + GitHub Release
+#   ./release --publish v3.0.0-beta     # push an existing tag + GitHub Release
 #
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$ROOT"
 
-VERSION="${1:-}"
+VERSION=""
 PUSH=false
+PUBLISH_EXISTING=false
 
 for arg in "$@"; do
-    if [[ "$arg" == "--push" ]]; then
-        PUSH=true
-    fi
+    case "$arg" in
+        --push) PUSH=true ;;
+        --publish)
+            PUBLISH_EXISTING=true
+            ;;
+    esac
 done
 
+if $PUBLISH_EXISTING; then
+    for arg in "$@"; do
+        if [[ "$arg" != --publish && "$arg" != --push ]]; then
+            VERSION="$arg"
+        fi
+    done
+else
+    for arg in "$@"; do
+        if [[ "$arg" != --push && "$arg" != --publish ]]; then
+            VERSION="$arg"
+        fi
+    done
+fi
+
 usage() {
-    echo "Usage: ./release <version> [--push]"
-    echo ""
-    echo "  Cleans runtime artifacts and dev scaffold, resets the template baseline"
-    echo "  from .release/template/, commits, tags, then restores this script on the branch."
-    echo ""
-    echo "  Example: ./release 3.0.0"
+    cat <<'EOF'
+Usage:
+  ./release <version> [--push]
+  ./release --publish <tag>
+
+  <version>   Tag version, e.g. 3.0.0 or v3.0.0-beta
+  --push      Push branch + tags to origin and create a GitHub Release (requires gh auth)
+  --publish   Push an existing local tag and create a GitHub Release (no re-cut)
+
+Examples:
+  ./release 3.0.0
+  ./release 3.0.0 --push
+  ./release --publish v3.0.0-beta
+
+Requires: git, GitHub CLI (gh) authenticated for --push / --publish
+EOF
     exit 1
 }
 
-[[ -n "$VERSION" && "$VERSION" != "--push" ]] || usage
+[[ -n "$VERSION" ]] || usage
 
 TAG="$VERSION"
 [[ "$TAG" == v* ]] || TAG="v$VERSION"
@@ -43,6 +72,104 @@ if ! git rev-parse --git-dir >/dev/null 2>&1; then
     exit 1
 fi
 
+github_repo() {
+    if command -v gh >/dev/null 2>&1; then
+        gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null && return
+    fi
+
+    local url
+    url="$(git remote get-url origin 2>/dev/null || true)"
+    url="${url%.git}"
+  url="${url#git@github.com:}"
+    url="${url#https://github.com/}"
+    echo "$url"
+}
+
+release_notes() {
+    local tag="$1"
+    cat <<EOF
+## Pionia application template ${tag}
+
+Official **Pionia v3** Moonlight REST API template for PHP 8.5+.
+
+\`\`\`bash
+composer create-project pionia/pionia-app my-api -- ${tag}
+cd my-api
+php pionia serve
+\`\`\`
+
+Default URL: \`http://127.0.0.1:8000/\`
+
+### Highlights
+
+- Moonlight API (\`/api/v1/\`) with \`WelcomeService\` starter
+- RoadRunner workers (optional, \`php pionia runserver\`)
+- Documented \`environment/settings.ini\` with all supported options
+- Production optimization via \`php pionia optimize\` (opt-in)
+EOF
+}
+
+gh_prerelease_args() {
+    if [[ "$TAG" =~ -(beta|alpha|rc) ]]; then
+        echo --prerelease
+    fi
+}
+
+publish_to_github() {
+    local tag_sha
+    tag_sha="$(git rev-parse "${TAG}^{commit}")"
+
+    if ! command -v gh >/dev/null 2>&1; then
+        echo "error: GitHub CLI (gh) is required for publishing" >&2
+        echo "  Install: https://cli.github.com/  then: gh auth login" >&2
+        exit 1
+    fi
+
+    if ! gh auth status >/dev/null 2>&1; then
+        echo "error: not logged in to GitHub — run: gh auth login" >&2
+        exit 1
+    fi
+
+    local repo
+    repo="$(github_repo)"
+    if [[ -z "$repo" ]]; then
+        echo "error: could not resolve GitHub repository from origin remote" >&2
+        exit 1
+    fi
+
+    echo "→ Pushing ${TAG} to origin..."
+    git push origin "$TAG"
+
+    if gh release view "$TAG" --repo "$repo" >/dev/null 2>&1; then
+        echo "→ GitHub Release ${TAG} already exists on ${repo}"
+        return
+    fi
+
+    echo "→ Creating GitHub Release ${TAG} on ${repo}..."
+    # shellcheck disable=SC2046
+    gh release create "$TAG" \
+        --repo "$repo" \
+        --title "Pionia App ${TAG}" \
+        --notes "$(release_notes "$TAG")" \
+        --target "$tag_sha" \
+        $(gh_prerelease_args)
+
+    echo "→ https://github.com/${repo}/releases/tag/${TAG}"
+}
+
+if $PUBLISH_EXISTING; then
+    if ! git rev-parse "$TAG" >/dev/null 2>&1; then
+        echo "error: tag ${TAG} does not exist locally" >&2
+        exit 1
+    fi
+
+  BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+    echo "→ Publishing existing tag ${TAG} from branch ${BRANCH}..."
+    git push -u origin "$BRANCH" 2>/dev/null || git push origin "$BRANCH"
+    publish_to_github
+    exit 0
+fi
+
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 if [[ "$BRANCH" == "HEAD" ]]; then
     echo "error: detached HEAD — checkout a branch first" >&2
@@ -50,7 +177,7 @@ if [[ "$BRANCH" == "HEAD" ]]; then
 fi
 
 if git rev-parse "$TAG" >/dev/null 2>&1; then
-    echo "error: tag ${TAG} already exists" >&2
+    echo "error: tag ${TAG} already exists — use: ./release --publish ${TAG}" >&2
     exit 1
 fi
 
@@ -169,15 +296,18 @@ git commit -m "Restore release tooling after ${TAG}"
 TAG_SHA="$(git rev-parse "${TAG}^{commit}")"
 
 echo ""
-echo "Released ${TAG} (${TAG_SHA})"
+echo "Released ${TAG} locally (${TAG_SHA})"
 echo "  Tag tree:  clean template (no release script, no dev scaffold)"
 echo "  Branch:    ${BRANCH} retains ./release and .release/ for the next cut"
 echo ""
 echo "  composer create-project pionia/pionia-app my-api -- ${TAG}"
-echo "  git push origin ${BRANCH} --tags"
 
 if [[ "$PUSH" == true ]]; then
     echo ""
-    echo "→ Pushing ${BRANCH} and ${TAG}..."
-    git push origin "$BRANCH" --tags
+    git push -u origin "$BRANCH"
+    publish_to_github
+else
+    echo ""
+    echo "  Publish:   ./release --publish ${TAG}"
+    echo "  Or next:   ./release ${TAG#v} --push"
 fi

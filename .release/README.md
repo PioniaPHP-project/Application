@@ -17,9 +17,12 @@ Update these files when the default template changes, then run `./release <versi
 ## Cut a release
 
 ```bash
-./release 3.0.0          # clean, commit, tag, restore tooling
-./release 3.0.0 --push   # same, then push branch and tags
+./release 3.0.0              # clean, commit, tag, restore tooling
+./release 3.0.0 --push       # same + push + GitHub Release
+./release --publish v3.0.0   # push an existing tag + GitHub Release
 ```
+
+Requires `gh auth login` for publishing.
 
 The tagged commit contains only the distributable template. The branch keeps `release`
 and `.release/` for the next version.
