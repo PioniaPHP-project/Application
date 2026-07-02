@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "338256247daf35191de3d7a6108a2cc6",
+    "content-hash": "cf065e8eca6bd52064d2498837ba987f",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -729,7 +729,7 @@
         },
         {
             "name": "pionia/pionia-core",
-            "version": "v3.0.0-beta.3",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PioniaPHP-project/Pionia.git",
@@ -809,7 +809,7 @@
             ],
             "support": {
                 "issues": "https://github.com/PioniaPHP-project/Pionia/issues",
-                "source": "https://github.com/PioniaPHP-project/Pionia/tree/v3.0.0-beta.3"
+                "source": "https://github.com/PioniaPHP-project/Pionia/tree/v3.0.0"
             },
             "time": "2026-07-02T19:30:41+00:00"
         },
@@ -4103,7 +4103,7 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": {},
     "prefer-stable": true,
     "prefer-lowest": false,
