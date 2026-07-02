@@ -66,3 +66,14 @@ Not multithreaded — same PHP worker. Heavy work → `async('service', 'action'
 ## Local core development
 
 Path-link to monorepo core: `composer config repositories.pionia-core path ../PioniaCore && composer require pionia/pionia-core:@dev`
+
+## Releasing the template
+
+Branch-only tooling (`release`, `.release/`) is removed from tagged commits.
+
+```bash
+./release 3.0.0          # clean runtime + dev scaffold, tag, restore tooling
+./release 3.0.0 --push   # push branch and tags to origin
+```
+
+Update `.release/template/` when default app files change.

@@ -729,16 +729,16 @@
         },
         {
             "name": "pionia/pionia-core",
-            "version": "v3.0.0-beta.2",
+            "version": "v3.0.0-beta.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PioniaPHP-project/Pionia.git",
-                "reference": "20d63925ee53c0e37463e504cae5fedcdd71c9fc"
+                "reference": "86f034223bef77423cdefb523e2f512cbe0c6081"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PioniaPHP-project/Pionia/zipball/20d63925ee53c0e37463e504cae5fedcdd71c9fc",
-                "reference": "20d63925ee53c0e37463e504cae5fedcdd71c9fc",
+                "url": "https://api.github.com/repos/PioniaPHP-project/Pionia/zipball/86f034223bef77423cdefb523e2f512cbe0c6081",
+                "reference": "86f034223bef77423cdefb523e2f512cbe0c6081",
                 "shasum": ""
             },
             "require": {
@@ -771,6 +771,7 @@
             "suggest": {
                 "ext-apcu": "APCu cache store (cache STORE=apcu; ideal for RoadRunner workers)",
                 "ext-redis": "Redis cache store (cache STORE=redis)",
+                "ext-sodium": "Symmetric and public-key encryption via security()->encrypt() and security()->encryptWithPublicKey()",
                 "nyholm/psr7": "PSR-7 messages for RoadRunner integration",
                 "react/promise": "Promise chaining for async() background work",
                 "roadrunner-php/centrifugo": "WebSocket RPC via RoadRunner Centrifuge plugin",
@@ -808,9 +809,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PioniaPHP-project/Pionia/issues",
-                "source": "https://github.com/PioniaPHP-project/Pionia/tree/v3.0.0-beta.2"
+                "source": "https://github.com/PioniaPHP-project/Pionia/tree/v3.0.0-beta.3"
             },
-            "time": "2026-07-02T14:37:01+00:00"
+            "time": "2026-07-02T19:30:41+00:00"
         },
         {
             "name": "psr/cache",

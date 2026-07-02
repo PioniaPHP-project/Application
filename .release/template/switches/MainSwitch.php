@@ -2,8 +2,6 @@
 
 namespace Application\Switches;
 
-use Application\Services\JetService;
-use Application\Services\TodoService;
 use Application\Services\WelcomeService;
 use Pionia\Collections\Arrayable;
 use Pionia\Http\Switches\ApiSwitch;
@@ -14,8 +12,6 @@ class MainSwitch extends ApiSwitch
     {
         return arr([
             'welcome' => WelcomeService::class,
-            'todo'=>TodoService::class,
-            'jet'=>JetService::class,
         ]);
     }
 }
